@@ -5,9 +5,12 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { validationPipeOptions } from '../user/validation.pipe.config';
 
 @Controller('user')
 export class UserController {
@@ -19,6 +22,8 @@ export class UserController {
   }
 
   @Post('create')
+  // Use ValidationPipe
+  @UsePipes(validationPipeOptions)
   async create(@Body() createUserDto: CreateUserDto) {
     console.log('Received DTO:', createUserDto); // Log received data
     const user = await this.userService.create(createUserDto);
